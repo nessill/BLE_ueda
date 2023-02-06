@@ -28,3 +28,8 @@ for i = 1:20
     fingerprint_all(i,:) = fingerprint;
 end
 toc       
+Footer
+© 2023 GitHub, Inc.
+Footer navigation
+Terms
+Privacy

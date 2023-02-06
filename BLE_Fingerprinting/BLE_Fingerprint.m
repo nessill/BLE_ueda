@@ -8,7 +8,7 @@ fc = 2.48e9;
 ch = 2.48e9;
 
 % upsampling factor for the BLE signal
-fs = fs*interp_fac;
+fs = fs*interp_fac;% interp_fac=32 fs=3.125e6 default
 
 % final output fingerprint
 fingerprint = [];
@@ -20,7 +20,11 @@ signal = signal/mean(abs(signal));
 signal = interp(signal,interp_fac);
 
 % Removing the channel offset and moving the signal fft to center
-if interp_fac ~= 1
+%{ 
+このコードでは、検出された BLE 信号を受け取り、そのフィンガープリントを計算します。
+CFO、I/Qオフセット、I/Qインバランスを含む、複数の異なる方法で 
+%}
+if interp_fac ~= 1 % 1ではないとき
     signal_fft = fftshift(fft(signal));
     ls = length(signal);
 
@@ -36,6 +40,7 @@ end
 [signal, signal_freq, bits] = BLE_Decoder(signal,fs,preamble_detect);
 
 %Estimating CFO for initialization using preamble averaging method
+%プリアンブル平均法を用いた初期化用CFOの推定法
 pream = signal_freq(1:fs/1e6*8-1);
 est_cfo = mean(pream(1:end));
 est_cfo2 = est_cfo;
