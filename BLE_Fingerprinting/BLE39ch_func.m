@@ -25,9 +25,27 @@ fcfo=fcfomin + (fcfomax-fcfomin)*rand; % 周波数オフセット配列の生成
 t=(0:length(waveform)-1)/Fs;
 cfo=exp(1j*2*pi*fcfo*t);
 waveformF=waveform.*cfo.';
+% I/Qオフセットの定義
 I_offset=1;
 Q_offset=2;
 waveform_FIQ=waveformF+I_offset+1j*Q_offset;
+% I/Q不均衡パラメータの定義
+amp_imbalance = 0.9;
+phase_imbalance = 0.05;
+
+% I/Q不均衡を加える
+I_imbalanced = real(waveform_FIQ) * amp_imbalance;
+Q_imbalanced = (imag(waveform_FIQ) + phase_imbalance) * amp_imbalance;
+waveform_FIQ=I_imbalanced+1j * Q_imbalanced;
+
+% パスを指定しそこに信号配列ファイルを追加
+numfile=num2str(1, '%06d');
+filename=append("BLEsignal", numfile);
+% pass = '/home/ueda21/Desktop/blephytracking/BLE_Fingerprinting/BLE_Signal_Data'; % パスの指定
+pass = '/home/ueda21/Desktop/MatlabR2022b/bin/blephytracking2/BLE_Fingerprinting/BLE_Signal_Data'; % パスの指定
+filenamepass=fullfile(pass,filename);
+save(filenamepass, '-regexp','x'); % BLE38chのCFO,I/Qオフセット,ホワイトガウスノイズつきのBLE38chの信号を保存
+
 waveform_FIQWgn = awgn(waveform_FIQ, 0.00, 'measured');% 3dB付加
 
 %% 可視化
@@ -40,8 +58,11 @@ release(spectrum);
 constel = comm.ConstellationDiagram('ColorFading', true, ...
     'ShowTrajectory', 0, ...
     'ShowReferenceConstellation', false);
-constel(waveform_FIQ);
+step(constel, waveform);
+
+step(constel, waveform_FIQ);
 release(constel);
+
 
 % Eye Diagram
 %eyediagram(waveform, 2* 8);
