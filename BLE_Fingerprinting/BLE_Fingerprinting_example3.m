@@ -12,19 +12,18 @@ fingerprint_size = 25;
 tic
 fingerprint_all = zeros(20,fingerprint_size);
 for i = 1:10
-    %signalpath='/home/ueda21/Desktop/MatlabR2022b/bin/blephytracking/BLE_Fingerprinting/BLESignal_Data/';
-    signalpath='D:\OneDrive - 岐阜大学\2023卒論\blephytracking2\BLE_Fingerprinting\BLE_signal_Data\';
+    signalpath='BLE_Signal_Data/';
     signalname='BLEsignal';
-    signalnum=pad(string(i),3,"left",'0');
+    signalnum=pad(string(i),6,"left",'0');
     signalname=append(signalpath,signalname, signalnum, '.mat');
     %clear signalform_IQFreqWgnadd
-    load(signalname,'waveform_IQFreqWgnadd')
-    waveform_IQFreqWgnadd(1:10,:);
-    waveform_IQFreqWgnadd = waveform_IQFreqWgnadd(1:end-12);
-    sz4=size(waveform_IQFreqWgnadd);
+    load(signalname,'waveform_FIQ')
+    waveform_FIQ(1:10,:);
+    waveform_FIQ = waveform_FIQ(1:end-12);
+    sz4=size(waveform_FIQ);
 
     % Physical layer fingerprinting
-    [fingerprint,bits] = BLE_Fingerprint(waveform_IQFreqWgnadd,snr,Fs,preamble_detect,interp_fac,n_partition);
+    [fingerprint,bits] = BLE_Fingerprint(waveform_FIQ,snr,Fs,preamble_detect,interp_fac,n_partition);
     fingerprint_all(i,:) = fingerprint;
     disp(fingerprint_all        )% 追加1/20 yuga
 end

@@ -43,10 +43,10 @@ for packetIdx = 1:numPackets
     % パスを指定しそこに信号配列ファイルを追加
     numfile=num2str(packetIdx, '%06d');
     filename=append("BLEsignal", numfile);
-    pass = 'C:\Users\textd\Documents\matlab\BLE_ueda\BLE_Fingerprinting\BLE_Signal_Data'; % パスの指定
+    pass = 'C:\Users\textd\Documents\matlab\BLE_ueda\BLE_Fingerprinting/BLE_Signal_Data'; % パスの指定
     %pass = '/home/ueda21/Desktop/MatlabR2022b/bin/blephytracking2/BLE_Fingerprinting/BLE_Signal_Data'; % パスの指定
     filenamepass=fullfile(pass,filename);
-    save(filenamepass,'waveform_FIQ','fcfo','I_offset','Q_offset','I_imbalanced','Q_imbalanced'); % BLE38chのCFO,I/Qオフセット,ホワイトガウスノイズつきのBLE38chの信号を保存
+    save(filenamepass,'waveformFIQ','fcfo','I_offset','Q_offset','I_imbalan '-regexp','x'); % BLE38chのCFO,I/Qオフセット,ホワイトガウスノイズつきのBLE38chの信号を保存
     
     %waveform_FIQWgn = awgn(waveform_FIQ, 0.00, 'measured');% 3dB付加
 end
