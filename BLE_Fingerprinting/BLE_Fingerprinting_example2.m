@@ -9,6 +9,14 @@ interp_fac = 32;
 n_partition = 250;
 fingerprint_size = 25;
 
+% Constellation Diagram
+I = real(waveform); % I成分
+Q = imag(waveform); % Q成分
+hold on; % 複数のグラフを同じFigureにプロットするためにhold onを使用する
+scatter(I, Q, '+', 'b'); % scatter plotを作成 blue
+hold off;  % hold onの状態を解除する
+xlabel('I'); ylabel('Q'); % x軸とy軸にラベルを付ける
+
 tic
 fingerprint_all = zeros(20,fingerprint_size);
 for i = 1:20
