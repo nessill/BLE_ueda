@@ -18,8 +18,8 @@ for i = 1:20
     signalnum=pad(string(i),6,"left",'0');
     signalname=append(signalpath,signalname, signalnum, '.mat');
     %clear signalform_IQFreqWgnadd
-    load(signalname,'re_waveform_F','im_waveform_F','Fs')
-    signal=re_waveform_F+1j*im_waveform_F;
+    load(signalname,'re_waveform_FIQ','im_waveform_FIQ','Fs')
+    signal=re_waveform_FIQ+1j*im_waveform_FIQ;
     signal(1:10,:);
     %waveform_FIQ = waveform_FIQ(1:end-12);
     %sz4=size(waveform_FIQ);
