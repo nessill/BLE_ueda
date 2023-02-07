@@ -10,7 +10,7 @@ interp_fac = 32;
 n_partition = 250;
 fingerprint_size = 25;
 
-cfo_est=zeros(20,3); % 2/7追加
+cfo_compair=zeros(20,3); % 2/7追加
 
 tic
 fingerprint_all = zeros(20,fingerprint_size);
@@ -30,10 +30,10 @@ for i = 1:20
     [fingerprint,bits] = BLE_Fingerprint(signal,snr,Fs,preamble_detect,interp_fac,n_partition);
     fingerprint_all(i,:) = fingerprint;
     
-    cfo_est(i,1)=fcfo;
-    cfo_est(i,2)=fingerprint(1,3);
-    cfo_est(i,3)=fcfo-fingerprint(1,3);
-    cfo_est_round=round(cfo_est,5,"significant");
+    cfo_compair(i,1)=fcfo;
+    cfo_compair(i,2)=fingerprint(1,3);
+    cfo_compair(i,3)=fcfo-fingerprint(1,3);
+    cfo_est_round=round(cfo_compair,5,"significant");
 end
 %{
 for i = 1:20

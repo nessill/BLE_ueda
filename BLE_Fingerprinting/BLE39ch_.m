@@ -20,15 +20,17 @@ for packetIdx = 1:numPackets
     Fs = sps * symbolRate; 								 % 波形のサンプル レートを Hz 単位で指定
     % 周波数オフセットの追加修正版.関数を使わず計算式のみで行った.
     % 周波数オフセットの値の作成
-    fcfomin=-6584.89515011225; % 周波数オフセット最小値
-    fcfomax=-6584.89515011225; % 周波数オフセット最大値% BLE規格の周波数オフセットの限界値150e3（これを超すとBluetoothの規格外）
+    fcfomin=-10000; % 周波数オフセット最小値
+    fcfomax=-1000; % 周波数オフセット最大値% BLE規格の周波数オフセットの限界値150e3（これを超すとBluetoothの規格外）
     fcfo=fcfomin + (fcfomax-fcfomin)*rand; % 周波数オフセット配列の生成.1k~100kHzでだけ作る.
+    %fcfo=0; % cfoの値を0にする。I・Q けいそくのため
     t=(0:length(waveform)-1)/Fs;
     cfo=exp(1j*2*pi*fcfo*t);
     waveform_F=waveform.*(cfo.');
-
+    re_waveform_F=real(waveform_F);
+    im_waveform_F=imag(waveform_F);
     % I/Qオフセットの定義
-    I_offset=-0.00972502161073269;
+    I_offset=0.00972502161073269;
     Q_offset=0.0129453893600390;
     % I/Q不均衡パラメータの定義
     amp_imbalance = 0;
@@ -37,7 +39,7 @@ for packetIdx = 1:numPackets
     I_imbalanced = real(waveform) * cos(amp_imbalance/2)+imag(waveform)*sin(amp_imbalance/2);
     Q_imbalanced = imag(waveform)*cos(amp_imbalance/2) + real(waveform)*sin((amp_imbalance/2));
     waveform_FIQ=I_imbalanced+I_offset+1j * (Q_imbalanced+Q_offset);
-    waveform_FIQ=waveform_FIQ.*cfo.';
+    %waveform_FIQ=waveform_FIQ.*cfo.';
     % パスを指定しそこに信号配列ファイルを追加
     re_waveform_FIQ=real(waveform_FIQ);
     im_waveform_FIQ=imag(waveform_FIQ);
@@ -45,7 +47,7 @@ for packetIdx = 1:numPackets
     filename=append("BLEsignal", numfile);
     pass = 'BLE_Signal_Data'; % パスの指定
     filenamepass=fullfile(pass,filename);
-    save(filenamepass,'re_waveform_FIQ','im_waveform_FIQ','fcfo','I_offset','Q_offset','I_imbalanced','Q_imbalanced'); 
+    save(filenamepass); 
 end
 %% 可視化
 % Spectrum Analyzer
