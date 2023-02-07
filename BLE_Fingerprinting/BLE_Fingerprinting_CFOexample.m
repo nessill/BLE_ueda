@@ -10,15 +10,17 @@ interp_fac = 32;
 n_partition = 250;
 fingerprint_size = 25;
 
+cfo_est=zeros(20,3); % 2/7追加
+
 tic
 fingerprint_all = zeros(20,fingerprint_size);
 for i = 1:20
-    signalpath='BLE_Signal_Data/';
+    signalpath='fingerprint20Data_CFOexample/';
     signalname='BLEsignal';
     signalnum=pad(string(i),6,"left",'0');
     signalname=append(signalpath,signalname, signalnum, '.mat');
     %clear signalform_IQFreqWgnadd
-    load(signalname,'re_waveform_FIQ','im_waveform_FIQ','Fs')
+    load(signalname,'re_waveform_FIQ','im_waveform_FIQ','Fs','fcfo')
     signal=re_waveform_FIQ+1j*im_waveform_FIQ;
     signal(1:10,:);
     %waveform_FIQ = waveform_FIQ(1:end-12);
@@ -27,7 +29,11 @@ for i = 1:20
     % Physical layer fingerprinting
     [fingerprint,bits] = BLE_Fingerprint(signal,snr,Fs,preamble_detect,interp_fac,n_partition);
     fingerprint_all(i,:) = fingerprint;
-    disp(fingerprint_all)% 追加1/20 yuga
+    
+    cfo_est(i,1)=fcfo;
+    cfo_est(i,2)=fingerprint(1,3);
+    cfo_est(i,3)=fcfo-fingerprint(1,3);
+    cfo_est_round=round(cfo_est,5,"significant");
 end
 %{
 for i = 1:20
