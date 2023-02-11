@@ -36,6 +36,8 @@ err = 0;
 
 % Partitioning the samples to speed up the code and running over multiple
 % random partitions to improve estimation accuracy and robustness
+% コードの高速化のためにサンプルを分割し、複数のランダムなパーティションで実行することで、推定精度とロバスト性を向上させる。
+% 推定精度とロバスト性を向上させるためのランダムな分割
 n = min(10,n_partition);
 l = floor(length(x2)/n_partition);
 
