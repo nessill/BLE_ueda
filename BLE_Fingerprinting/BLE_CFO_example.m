@@ -1,9 +1,6 @@
 
 
 % parameter setup
-%Fs = 3.125e6;
-
-%Fs=8e6;%後々コード変えます
 snr = 40;
 preamble_detect = 1;
 interp_fac = 32;
